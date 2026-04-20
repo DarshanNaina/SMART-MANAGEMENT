@@ -7,15 +7,8 @@ from datetime import timedelta
 
 
 class CustomUser(AbstractUser):
-    class Role(models.TextChoices):
-        ADMIN = "ADMIN", "Admin"
-        TEACHER = "TEACHER", "Teacher"
-        STUDENT = "STUDENT", "Student"
-
-    role = models.CharField(max_length=20, choices=Role.choices)
-
     def __str__(self):
-        return f"{self.username} ({self.role})"
+        return f"{self.username}"
 
 
 class AcademicClass(models.Model):
@@ -133,7 +126,7 @@ class Attendance(models.Model):
         ordering = ["-date"]
 
     def __str__(self):
-        return f"{self.student.roll_number} - {self.subject.name} - {self.date}"
+        return f"{self.student.user.get_full_name() or self.student.user.username} - {self.subject.name} - {self.date}"
 
 
 class Assignment(models.Model):
@@ -188,4 +181,4 @@ class AssignmentSubmission(models.Model):
         ordering = ["-submitted_at"]
 
     def __str__(self):
-        return f"{self.student.roll_number} -> {self.assignment.title}"
+        return f"{self.student.user.get_full_name() or self.student.user.username} -> {self.assignment.title}"

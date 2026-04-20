@@ -88,20 +88,14 @@ def register_view(request):
         user.set_password(form.cleaned_data["password1"])
         user.is_active = False
         user.save()
-        if user.role == CustomUser.Role.STUDENT:
-            StudentProfile.objects.get_or_create(
-                user=user,
-                defaults={
-                    "roll_number": f"S-{user.id:05d}",
-                    "parent_email": form.cleaned_data["parent_email"],
-                    "academic_class": form.cleaned_data["academic_class"],
-                },
-            )
-        if user.role == CustomUser.Role.TEACHER:
-            TeacherProfile.objects.get_or_create(
-                user=user,
-                defaults={"employee_id": f"T-{user.id:05d}"},
-            )
+        StudentProfile.objects.get_or_create(
+            user=user,
+            defaults={
+                "roll_number": f"S-{user.id:05d}",
+                "parent_email": form.cleaned_data["parent_email"],
+                "academic_class": form.cleaned_data["academic_class"],
+            },
+        )
         sent, message = _create_and_send_otp(user, OTPVerification.Purpose.REGISTRATION, "Registration")
         if not sent:
             user.delete()
@@ -234,13 +228,8 @@ def redirect_dashboard(request):
     if not request.user.is_authenticated:
         return redirect("accounts:login")
 
-    if request.user.role == CustomUser.Role.ADMIN:
-        return redirect("admin_panel:dashboard")
-    if request.user.role == CustomUser.Role.TEACHER:
-        return redirect("teacher:dashboard")
     return redirect("student:dashboard")
 
 
-@role_required(CustomUser.Role.ADMIN, CustomUser.Role.TEACHER, CustomUser.Role.STUDENT)
 def home(request):
     return render(request, "accounts/home.html")

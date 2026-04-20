@@ -2,7 +2,6 @@ from django.contrib import messages
 from django.db.models import Avg
 from django.shortcuts import redirect, render
 
-from accounts.decorators import role_required
 from accounts.models import Assignment, AssignmentSubmission, Attendance, CustomUser, Mark, StudentProfile
 from .forms import AssignmentSubmissionForm
 
@@ -15,7 +14,6 @@ def _student_profile(user):
     return profile
 
 
-@role_required(CustomUser.Role.STUDENT)
 def dashboard(request):
     profile = _student_profile(request.user)
     marks = Mark.objects.filter(student=profile).select_related("subject")
@@ -40,7 +38,6 @@ def dashboard(request):
     return render(request, "student/dashboard.html", context)
 
 
-@role_required(CustomUser.Role.STUDENT)
 def upload_assignment(request):
     profile = _student_profile(request.user)
     form = AssignmentSubmissionForm(request.POST or None, request.FILES or None)

@@ -14,7 +14,7 @@ from accounts.models import (
 class UserCreateForm(UserCreationForm):
     class Meta:
         model = CustomUser
-        fields = ("username", "first_name", "last_name", "email", "role")
+        fields = ("username", "first_name", "last_name", "email")
 
 
 class ClassForm(forms.ModelForm):

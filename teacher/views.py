@@ -4,7 +4,6 @@ from django.shortcuts import redirect, render
 from django.utils import timezone
 from django.conf import settings
 
-from accounts.decorators import role_required
 from accounts.models import Attendance, CustomUser, Mark, StudentProfile, Subject, TeacherProfile, TeacherSubjectAssignment
 
 from .forms import AssignmentForm, AttendanceForm, MarkForm
@@ -18,7 +17,6 @@ def _teacher_profile(user):
     return profile
 
 
-@role_required(CustomUser.Role.TEACHER)
 def dashboard(request):
     profile = _teacher_profile(request.user)
     subject_ids = TeacherSubjectAssignment.objects.filter(teacher=profile).values_list("subject_id", flat=True)
@@ -30,7 +28,6 @@ def dashboard(request):
     return render(request, "teacher/dashboard.html", context)
 
 
-@role_required(CustomUser.Role.TEACHER)
 def manage_marks(request):
     profile = _teacher_profile(request.user)
     subject_ids = list(TeacherSubjectAssignment.objects.filter(teacher=profile).values_list("subject_id", flat=True))
@@ -75,7 +72,6 @@ def manage_marks(request):
     return render(request, "teacher/manage_marks.html", {"form": form, "marks": marks})
 
 
-@role_required(CustomUser.Role.TEACHER)
 def manage_attendance(request):
     profile = _teacher_profile(request.user)
     subject_ids = list(TeacherSubjectAssignment.objects.filter(teacher=profile).values_list("subject_id", flat=True))
@@ -104,7 +100,6 @@ def manage_attendance(request):
     )
 
 
-@role_required(CustomUser.Role.TEACHER)
 def manage_assignments(request):
     profile = _teacher_profile(request.user)
     subject_ids = list(TeacherSubjectAssignment.objects.filter(teacher=profile).values_list("subject_id", flat=True))

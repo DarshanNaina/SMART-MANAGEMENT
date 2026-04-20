@@ -26,7 +26,7 @@ class RegisterForm(forms.ModelForm):
 
     class Meta:
         model = CustomUser
-        fields = ("username", "first_name", "last_name", "email", "role")
+        fields = ("username", "first_name", "last_name", "email")
         widgets = {
             "username": forms.TextInput(attrs={"class": "form-control"}),
             "first_name": forms.TextInput(attrs={"class": "form-control"}),
