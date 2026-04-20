@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Manage Attendance{% endblock %}
+{% block page_title %}Manage Attendance{% endblock %}
+{% block content %}
+<section class="glass-card p-4 mb-3" data-aos="fade-up">
+    <form method="post" class="grid-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Save Attendance</button>
+    </form>
+</section>
+<section class="glass-card p-4" data-aos="fade-up">
+    <div class="table-responsive"><table class="table table-hover align-middle">
+        <tr><th>Date</th><th>Student</th><th>Subject</th><th>Status</th></tr>
+        {% for row in attendance_records %}
+            <tr>
+                <td>{{ row.date }}</td>
+                <td>{{ row.student.user.get_full_name|default:row.student.roll_number }}</td>
+                <td>{{ row.subject.name }}</td>
+                <td>{{ row.status }}</td>
+            </tr>
+        {% empty %}
+            <tr><td colspan="4">No attendance records found.</td></tr>
+        {% endfor %}
+    </table></div>
+</section>
+{% endblock %}

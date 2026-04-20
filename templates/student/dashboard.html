@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block title %}Student Dashboard{% endblock %}
+{% block page_title %}Student Dashboard{% endblock %}
+{% block content %}
+<section class="glass-card p-4 mb-3" data-aos="fade-up">
+    <p><strong>Name:</strong> {{ profile.user.get_full_name|default:profile.user.username }}</p>
+    <p><strong>Roll No:</strong> {{ profile.roll_number }}</p>
+    <p class="mb-0"><strong>Class:</strong> {{ profile.academic_class|default:"Not assigned yet" }}</p>
+</section>
+<div class="row g-3 mb-4">
+    <div class="col-md-6" data-aos="fade-up"><div class="glass-card stat-card"><h6>Average Marks</h6><h3>{{ average_marks }}</h3></div></div>
+    <div class="col-md-3" data-aos="fade-up" data-aos-delay="100"><div class="glass-card stat-card"><h6>Attendance %</h6><h3>{{ attendance_percentage }}%</h3></div></div>
+    <div class="col-md-3" data-aos="fade-up" data-aos-delay="150"><div class="glass-card stat-card"><h6>Submissions</h6><h3>{{ submission_count }}</h3></div></div>
+</div>
+<div class="mb-3">
+    <a href="{% url 'student:upload_assignment' %}" class="btn btn-outline-primary">Upload Assignment</a>
+</div>
+<section class="glass-card p-4 mb-3" data-aos="fade-up">
+    <h3>Marks</h3>
+    <div class="table-responsive">
+    <table class="table table-hover align-middle">
+        <tr><th>Subject</th><th>Exam</th><th>Score</th><th>Percent</th><th>Grade</th></tr>
+        {% for mark in marks %}
+            <tr>
+                <td>{{ mark.subject.name }}</td>
+                <td>{{ mark.exam_name }}</td>
+                <td>{{ mark.marks_obtained }}/{{ mark.total_marks }}</td>
+                <td>{{ mark.percentage }}%</td>
+                <td>{{ mark.grade }}</td>
+            </tr>
+        {% empty %}
+            <tr><td colspan="5">No marks available.</td></tr>
+        {% endfor %}
+    </table></div>
+</section>
+<section class="glass-card p-4" data-aos="fade-up">
+    <h3>Assignments</h3>
+    <div class="table-responsive">
+    <table class="table table-hover align-middle">
+        <tr><th>Title</th><th>Subject</th><th>Due Date</th><th>File</th></tr>
+        {% for item in assignments %}
+            <tr>
+                <td>{{ item.title }}</td>
+                <td>{{ item.subject.name }}</td>
+                <td>{{ item.due_date|default:"-" }}</td>
+                <td>
+                    {% if item.file %}
+                        <a href="{{ item.file.url }}">Download</a>
+                    {% else %}
+                        N/A
+                    {% endif %}
+                </td>
+            </tr>
+        {% empty %}
+            <tr><td colspan="4">No assignments available.</td></tr>
+        {% endfor %}
+    </table></div>
+</section>
+{% endblock %}

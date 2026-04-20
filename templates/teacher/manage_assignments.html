@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Manage Assignments{% endblock %}
+{% block page_title %}Manage Assignments{% endblock %}
+{% block content %}
+<section class="glass-card p-4 mb-3" data-aos="fade-up">
+    <form method="post" enctype="multipart/form-data" class="grid-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Upload Assignment</button>
+    </form>
+</section>
+<section class="glass-card p-4" data-aos="fade-up">
+    <div class="table-responsive"><table class="table table-hover align-middle">
+        <tr><th>Title</th><th>Subject</th><th>Class</th><th>Due Date</th></tr>
+        {% for item in assignments %}
+            <tr>
+                <td>{{ item.title }}</td>
+                <td>{{ item.subject.name }}</td>
+                <td>{{ item.academic_class }}</td>
+                <td>{{ item.due_date|default:"-" }}</td>
+            </tr>
+        {% empty %}
+            <tr><td colspan="4">No assignments uploaded.</td></tr>
+        {% endfor %}
+    </table></div>
+</section>
+{% endblock %}

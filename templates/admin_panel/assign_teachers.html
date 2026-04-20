@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Assign Teachers{% endblock %}
+{% block page_title %}Assign Teachers{% endblock %}
+{% block content %}
+<section class="glass-card p-4 mb-3" data-aos="fade-up">
+    <form method="post" class="grid-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Assign</button>
+    </form>
+</section>
+<section class="glass-card p-4" data-aos="fade-up">
+    <h3>Current Assignments</h3>
+    <div class="table-responsive"><table class="table table-hover align-middle">
+        <tr><th>Teacher</th><th>Subject</th><th>Class</th></tr>
+        {% for assignment in assignments %}
+            <tr>
+                <td>{{ assignment.teacher.user.get_full_name|default:assignment.teacher.user.username }}</td>
+                <td>{{ assignment.subject.name }}</td>
+                <td>{{ assignment.subject.academic_class }}</td>
+            </tr>
+        {% empty %}
+            <tr><td colspan="3">No assignments available.</td></tr>
+        {% endfor %}
+    </table></div>
+</section>
+{% endblock %}

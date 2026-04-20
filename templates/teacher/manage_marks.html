@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}Manage Marks{% endblock %}
+{% block page_title %}Manage Marks{% endblock %}
+{% block content %}
+<section class="glass-card p-4 mb-3" data-aos="fade-up">
+    <form method="post" class="grid-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Save Mark</button>
+    </form>
+</section>
+<section class="glass-card p-4" data-aos="fade-up">
+    <div class="table-responsive"><table class="table table-hover align-middle">
+        <tr><th>Student</th><th>Subject</th><th>Exam</th><th>Marks</th><th>Percent</th><th>Grade</th></tr>
+        {% for mark in marks %}
+            <tr>
+                <td>{{ mark.student.user.get_full_name|default:mark.student.roll_number }}</td>
+                <td>{{ mark.subject.name }}</td>
+                <td>{{ mark.exam_name }}</td>
+                <td>{{ mark.marks_obtained }}/{{ mark.total_marks }}</td>
+                <td>{{ mark.percentage }}%</td>
+                <td>{{ mark.grade }}</td>
+            </tr>
+        {% empty %}
+            <tr><td colspan="6">No marks found.</td></tr>
+        {% endfor %}
+    </table></div>
+</section>
+{% endblock %}

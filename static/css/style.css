@@ -1,0 +1,193 @@
+:root {
+    --primary: #5b6cff;
+    --secondary: #8b5cf6;
+    --bg: #f1f4ff;
+    --text: #1e293b;
+}
+
+* {
+    font-family: "Poppins", sans-serif;
+}
+
+body {
+    margin: 0;
+    color: var(--text);
+    background: linear-gradient(135deg, #eaf0ff 0%, #f8f2ff 60%, #eefaf7 100%);
+    min-height: 100vh;
+}
+
+.app-shell {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    min-height: 100vh;
+    gap: 20px;
+    padding: 20px;
+}
+
+.sidebar {
+    padding: 20px;
+    position: sticky;
+    top: 20px;
+    height: calc(100vh - 40px);
+}
+
+.badge-brand {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: #fff;
+    padding: 8px 14px;
+    border-radius: 12px;
+    font-weight: 600;
+}
+
+.nav-link {
+    color: #334155;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+    background: rgba(91, 108, 255, 0.14);
+    transform: translateX(4px);
+}
+
+.main-content {
+    padding-right: 10px;
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 18px;
+    box-shadow: 0 12px 30px rgba(47, 58, 120, 0.12);
+}
+
+.topbar {
+    padding: 16px 20px;
+}
+
+.stat-card {
+    padding: 18px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 32px rgba(47, 58, 120, 0.18);
+}
+
+.auth-layout {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+}
+
+.auth-card {
+    width: min(1000px, 100%);
+    overflow: hidden;
+}
+
+.auth-banner {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: #fff;
+    align-items: center;
+    justify-content: center;
+    padding: 32px;
+}
+
+.grid-form p {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.grid-form label {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.form-control, .form-select {
+    border-radius: 12px;
+    padding: 10px 12px;
+    border: 1px solid #ced4da;
+}
+
+.btn {
+    border-radius: 12px;
+    transition: all 0.25s ease;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+}
+
+.hero-section {
+    padding: 28px;
+}
+
+.table {
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.table > :not(caption) > * > * {
+    padding: 0.85rem;
+}
+
+.table-hover tbody tr {
+    transition: all 0.2s ease;
+}
+
+.table-hover tbody tr:hover {
+    transform: scale(1.005);
+    background-color: rgba(91, 108, 255, 0.05);
+}
+
+.split {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.notification-pill, .profile-pill {
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(200, 210, 255, 0.8);
+    border-radius: 12px;
+    padding: 8px 12px;
+}
+
+.otp-card {
+    max-width: 520px;
+    margin: auto;
+    padding: 30px;
+}
+
+.page-loader {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(135deg, #5b6cff, #8b5cf6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.page-loader.hide {
+    opacity: 0;
+    visibility: hidden;
+}
+
+@media (max-width: 992px) {
+    .app-shell {
+        grid-template-columns: 1fr;
+        padding: 12px;
+    }
+    .sidebar {
+        height: auto;
+        position: static;
+    }
+}

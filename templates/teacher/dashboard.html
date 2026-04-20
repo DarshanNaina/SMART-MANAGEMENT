@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}Teacher Dashboard{% endblock %}
+{% block page_title %}Teacher Dashboard{% endblock %}
+{% block content %}
+<div class="row g-3 mb-4">
+    <div class="col-md-4" data-aos="fade-up"><div class="glass-card stat-card"><h6>Assigned Subjects</h6><h3>{{ subject_count }}</h3></div></div>
+    <div class="col-md-4" data-aos="fade-up" data-aos-delay="100"><div class="glass-card stat-card"><h6>Marks Entered</h6><h3>{{ mark_count }}</h3></div></div>
+    <div class="col-md-4" data-aos="fade-up" data-aos-delay="200"><div class="glass-card stat-card"><h6>Attendance Entries</h6><h3>{{ attendance_count }}</h3></div></div>
+</div>
+<div class="glass-card p-4" data-aos="fade-up">
+    <h5 class="mb-3">Quick Actions</h5>
+    <div class="d-flex flex-wrap gap-2">
+        <a href="{% url 'teacher:manage_marks' %}" class="btn btn-outline-primary">Manage Marks</a>
+        <a href="{% url 'teacher:manage_attendance' %}" class="btn btn-outline-primary">Manage Attendance</a>
+        <a href="{% url 'teacher:manage_assignments' %}" class="btn btn-outline-primary">Upload Assignments</a>
+    </div>
+</div>
+{% endblock %}

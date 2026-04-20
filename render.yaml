@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: academic-system
+    env: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn core.wsgi:application"
+    envVars:
+      - key: DEBUG
+        value: "False"
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: academic-system-db
+          property: connectionString
+
+databases:
+  - name: academic-system-db

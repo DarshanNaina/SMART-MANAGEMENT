@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block title %}Home | SAMS{% endblock %}
+{% block page_title %}Welcome{% endblock %}
+{% block content %}
+<section class="hero-section glass-card" data-aos="fade-up">
+    <div class="row align-items-center g-4">
+        <div class="col-lg-7">
+            <h1 class="display-6 fw-bold">Modern Smart Academic Management Platform</h1>
+            <p class="lead text-muted">Track students, manage faculty, monitor attendance, and measure performance in one premium dashboard.</p>
+            <a href="{% url 'accounts:redirect_dashboard' %}" class="btn btn-primary btn-lg">Go to Dashboard</a>
+        </div>
+        <div class="col-lg-5">
+            <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=1200&auto=format&fit=crop" class="img-fluid rounded-4 shadow" alt="Education hero">
+        </div>
+    </div>
+</section>
+<section class="row g-4 mt-1">
+    <div class="col-md-4" data-aos="fade-up" data-aos-delay="50">
+        <div class="glass-card stat-card h-100">
+            <h5>Role</h5>
+            <h3>{{ request.user.role }}</h3>
+        </div>
+    </div>
+    <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+        <div class="glass-card stat-card h-100">
+            <h5>Access</h5>
+            <h3>Role-Based Secure</h3>
+        </div>
+    </div>
+    <div class="col-md-4" data-aos="fade-up" data-aos-delay="150">
+        <div class="glass-card stat-card h-100">
+            <h5>Authentication</h5>
+            <h3>Password + OTP</h3>
+        </div>
+    </div>
+</section>
+{% endblock %}

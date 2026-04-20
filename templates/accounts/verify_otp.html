@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}Verify OTP | SAMS{% endblock %}
+{% block content %}
+<section class="auth-card glass-card otp-card" data-aos="zoom-in">
+    <h2 class="fw-bold">OTP Verification</h2>
+    <p class="text-muted">Enter the 6-digit OTP for {{ flow }}.</p>
+    <form method="post" class="vstack gap-3">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary btn-lg">Verify OTP</button>
+    </form>
+    <form method="post" action="{% url resend_url_name %}" class="mt-3">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-outline-secondary">Resend OTP</button>
+    </form>
+    <p class="small text-muted mt-3 mb-0">Rate limit: max 3 OTP requests in 10 minutes, with 60-second resend cooldown.</p>
+</section>
+{% endblock %}

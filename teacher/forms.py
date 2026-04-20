@@ -1,0 +1,23 @@
+from django import forms
+
+from accounts.models import Assignment, Attendance, Mark
+
+
+class MarkForm(forms.ModelForm):
+    class Meta:
+        model = Mark
+        fields = ("student", "subject", "exam_name", "marks_obtained", "total_marks")
+
+
+class AttendanceForm(forms.ModelForm):
+    class Meta:
+        model = Attendance
+        fields = ("student", "subject", "date", "status")
+        widgets = {"date": forms.DateInput(attrs={"type": "date"})}
+
+
+class AssignmentForm(forms.ModelForm):
+    class Meta:
+        model = Assignment
+        fields = ("title", "description", "subject", "academic_class", "file", "due_date")
+        widgets = {"due_date": forms.DateInput(attrs={"type": "date"})}
