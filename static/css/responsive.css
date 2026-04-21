@@ -1,0 +1,322 @@
+﻿/* Responsive Design */
+
+/* Tablet and Small Desktop */
+@media (max-width: 1200px) {
+    .app-shell {
+        grid-template-columns: 260px 1fr;
+        gap: var(--space-md);
+        padding: var(--space-md);
+    }
+
+    .sidebar {
+        height: calc(100vh - 2 * var(--space-md));
+    }
+
+    .stat-card h3 {
+        font-size: 1.75rem;
+    }
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+    .app-shell {
+        grid-template-columns: 1fr;
+        gap: var(--space-md);
+        padding: var(--space-md);
+    }
+
+    .sidebar {
+        position: static;
+        height: auto;
+        margin-bottom: var(--space-lg);
+        max-height: 300px;
+        overflow-y: auto;
+    }
+
+    .auth-card {
+        flex-direction: column;
+        max-width: 600px;
+    }
+
+    .auth-banner {
+        order: -1;
+        padding: var(--space-lg);
+        text-align: center;
+    }
+
+    .auth-banner h4 {
+        font-size: 1.5rem;
+    }
+
+    .stat-card {
+        padding: var(--space-md);
+    }
+
+    .stat-card h3 {
+        font-size: 1.5rem;
+    }
+
+    .split {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: var(--space);
+    }
+}
+
+/* Mobile Landscape */
+@media (max-width: 768px) {
+    :root {
+        --space: 12px;
+        --space-md: 16px;
+        --space-lg: 20px;
+        --space-xl: 24px;
+    }
+
+    .app-shell {
+        padding: var(--space-sm);
+        gap: var(--space-sm);
+    }
+
+    .sidebar {
+        margin-bottom: var(--space-md);
+        padding: var(--space);
+    }
+
+    .nav-link {
+        padding: var(--space-sm) var(--space);
+        font-size: 0.9rem;
+    }
+
+    .main-content {
+        padding: 0;
+    }
+
+    .topbar {
+        padding: var(--space-sm) var(--space);
+        margin-bottom: var(--space-md);
+        flex-wrap: wrap;
+        gap: var(--space-sm);
+    }
+
+    .topbar .d-flex {
+        flex-wrap: wrap;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .topbar h4 {
+        font-size: 1.1rem;
+        margin-bottom: var(--space-xs);
+    }
+
+    .topbar small {
+        font-size: 0.8rem;
+    }
+
+    .stat-card {
+        padding: var(--space);
+        margin-bottom: var(--space);
+    }
+
+    .stat-card h3 {
+        font-size: 1.25rem;
+    }
+
+    .stat-card h6 {
+        font-size: 0.8rem;
+    }
+
+    .split {
+        grid-template-columns: 1fr;
+        gap: var(--space-sm);
+    }
+
+    .table-responsive {
+        font-size: 0.8rem;
+    }
+
+    .table > :not(caption) > * > * {
+        padding: var(--space-sm);
+    }
+
+    .btn {
+        padding: var(--space-xs) var(--space-sm);
+        font-size: 0.9rem;
+    }
+
+    .form-control, .form-select {
+        padding: var(--space-xs) var(--space-sm);
+        font-size: 0.9rem;
+    }
+
+    .notification-pill, .profile-pill {
+        padding: var(--space-xs) var(--space-sm);
+        font-size: 0.8rem;
+    }
+
+    .badge-brand {
+        font-size: 0.9rem;
+        padding: var(--space-xs) var(--space-sm);
+    }
+
+    h1 { font-size: 1.5rem; }
+    h2 { font-size: 1.25rem; }
+    h3 { font-size: 1.1rem; }
+    h4 { font-size: 1rem; }
+}
+
+/* Mobile Portrait */
+@media (max-width: 480px) {
+    :root {
+        --space: 8px;
+        --space-md: 12px;
+        --space-lg: 16px;
+        --space-xl: 20px;
+    }
+
+    .app-shell {
+        padding: var(--space);
+        gap: var(--space);
+    }
+
+    .sidebar {
+        padding: var(--space-sm);
+        margin-bottom: var(--space);
+    }
+
+    .nav-link {
+        padding: var(--space) var(--space-sm);
+        font-size: 0.85rem;
+        justify-content: center;
+    }
+
+    .nav-link i {
+        margin-right: var(--space-xs);
+    }
+
+    .topbar {
+        padding: var(--space) var(--space-sm);
+        margin-bottom: var(--space);
+    }
+
+    .topbar h4 {
+        font-size: 1rem;
+        margin-bottom: var(--space-xs);
+    }
+
+    .topbar small {
+        font-size: 0.75rem;
+    }
+
+    .stat-card {
+        padding: var(--space-sm);
+        margin-bottom: var(--space-sm);
+    }
+
+    .stat-card h3 {
+        font-size: 1.1rem;
+    }
+
+    .stat-card h6 {
+        font-size: 0.75rem;
+    }
+
+    .split {
+        gap: var(--space);
+    }
+
+    .table-responsive {
+        font-size: 0.75rem;
+    }
+
+    .table > :not(caption) > * > * {
+        padding: var(--space-xs);
+    }
+
+    .btn {
+        padding: var(--space-xs) var(--space);
+        font-size: 0.85rem;
+        min-height: 44px; /* iOS touch target */
+    }
+
+    .form-control, .form-select {
+        padding: var(--space-xs) var(--space-sm);
+        font-size: 0.85rem;
+        min-height: 44px; /* iOS touch target */
+    }
+
+    .notification-pill, .profile-pill {
+        padding: var(--space-xs) var(--space-sm);
+        font-size: 0.75rem;
+        min-height: 36px;
+    }
+
+    .badge-brand {
+        font-size: 0.8rem;
+        padding: var(--space-xs) var(--space-sm);
+    }
+
+    .theme-toggle {
+        width: 40px;
+        height: 40px;
+        margin-right: var(--space-xs);
+        margin-left: 0;
+    }
+
+    .hero-section {
+        padding: var(--space);
+    }
+
+    .otp-card {
+        padding: var(--space-md);
+        margin: var(--space);
+    }
+
+    .auth-layout {
+        padding: var(--space-md);
+    }
+
+    .auth-banner {
+        padding: var(--space-md);
+    }
+
+    .auth-banner h4 {
+        font-size: 1.25rem;
+    }
+
+    h1 { font-size: 1.25rem; }
+    h2 { font-size: 1.1rem; }
+    h3 { font-size: 1rem; }
+    h4 { font-size: 0.9rem; }
+    h5 { font-size: 0.8rem; }
+}
+
+/* Extra Small Mobile */
+@media (max-width: 360px) {
+    .app-shell {
+        padding: var(--space-sm);
+    }
+
+    .topbar .d-flex {
+        flex-direction: column;
+        align-items: flex-start !important;
+        gap: var(--space-xs);
+    }
+
+    .topbar .d-flex > div:last-child {
+        align-self: flex-end;
+    }
+
+    .nav-link {
+        font-size: 0.8rem;
+        padding: var(--space-xs) var(--space-sm);
+    }
+
+    .stat-card h3 {
+        font-size: 1rem;
+    }
+
+    .btn {
+        font-size: 0.8rem;
+        padding: var(--space-xs) var(--space-sm);
+    }
+}

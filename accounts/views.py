@@ -9,8 +9,10 @@ from django.core.mail import send_mail
 from django.shortcuts import redirect, render
 from django.utils import timezone
 
+from django.conf import settings
+
 from .decorators import role_required
-from .forms import LoginWithPasswordForm, OTPForm, RegisterForm
+from .forms import LoginWithPasswordForm, OTPForm, RegisterForm, SecretKeyForm
 from .models import CustomUser, OTPVerification, StudentProfile, TeacherProfile
 
 OTP_RATE_LIMIT_WINDOW_MINUTES = 10
@@ -81,30 +83,99 @@ def _create_and_send_otp(user, purpose, purpose_label):
     return True, "OTP sent to your email."
 
 
-def register_view(request):
-    form = RegisterForm(request.POST or None)
+def _get_register_template(role):
+    if role == "TEACHER":
+        return "teacher/register.html"
+    elif role == "ADMIN":
+        return "admin_panel/register.html"
+    else:
+        return "accounts/register.html"
+
+
+def secret_key_verification_view(request):
+    flow = request.session.get('secret_key_flow')
+    if not flow:
+        return redirect('accounts:register')
+
+    form = SecretKeyForm(request.POST or None, expected_key=settings.SECRET_ACCESS_KEY)
+    if request.method == "POST" and form.is_valid():
+        if flow == 'registration':
+            user_id = request.session.get('pending_registration_user_id')
+            if user_id:
+                user = CustomUser.objects.filter(id=user_id).first()
+                if user:
+                    sent, message = _create_and_send_otp(user, OTPVerification.Purpose.REGISTRATION, "Registration")
+                    if sent:
+                        request.session.pop('secret_key_flow', None)
+                        messages.info(request, message)
+                        return redirect("accounts:verify_registration_otp")
+                    else:
+                        user.delete()
+                        request.session.pop('pending_registration_user_id', None)
+                        request.session.pop('secret_key_flow', None)
+                        messages.error(request, message)
+                        return redirect('accounts:register')
+        elif flow == 'login':
+            user_id = request.session.get('pending_login_user_id')
+            if user_id:
+                user = CustomUser.objects.filter(id=user_id).first()
+                if user:
+                    sent, message = _create_and_send_otp(user, OTPVerification.Purpose.LOGIN, "Login")
+                    if sent:
+                        request.session.pop('secret_key_flow', None)
+                        messages.info(request, message)
+                        return redirect("accounts:verify_login_otp")
+                    else:
+                        request.session.pop('pending_login_user_id', None)
+                        request.session.pop('secret_key_flow', None)
+                        messages.error(request, message)
+                        return redirect('accounts:login')
+    return render(request, "accounts/secret_key.html", {"form": form})
+
+
+def register_view(request, role=None):
+    if role:
+        initial = {"role": role}
+    else:
+        initial = {}
+    form = RegisterForm(request.POST or None, initial=initial)
     if request.method == "POST" and form.is_valid():
         user = form.save(commit=False)
+        user.role = role or CustomUser.Role.STUDENT
         user.set_password(form.cleaned_data["password1"])
         user.is_active = False
         user.save()
-        StudentProfile.objects.get_or_create(
-            user=user,
-            defaults={
-                "roll_number": f"S-{user.id:05d}",
-                "parent_email": form.cleaned_data["parent_email"],
-                "academic_class": form.cleaned_data["academic_class"],
-            },
-        )
+        if user.role == CustomUser.Role.STUDENT:
+            StudentProfile.objects.get_or_create(
+                user=user,
+                defaults={
+                    "roll_number": f"S-{user.id:05d}",
+                    "parent_email": form.cleaned_data["parent_email"],
+                    "academic_class": form.cleaned_data["academic_class"],
+                },
+            )
+        elif user.role == CustomUser.Role.TEACHER:
+            TeacherProfile.objects.get_or_create(
+                user=user,
+                defaults={"employee_id": f"T-{user.id:05d}"},
+            )
+        # For ADMIN/TEACHER, require secret key verification
+        if user.role in [CustomUser.Role.ADMIN, CustomUser.Role.TEACHER]:
+            request.session['pending_registration_user_id'] = user.id
+            request.session['secret_key_flow'] = 'registration'
+            return redirect('accounts:secret_key_verification')
+        # For STUDENT, proceed directly to OTP
         sent, message = _create_and_send_otp(user, OTPVerification.Purpose.REGISTRATION, "Registration")
         if not sent:
             user.delete()
             messages.error(request, message)
-            return render(request, "accounts/register.html", {"form": form})
+            template = _get_register_template(role)
+            return render(request, template, {"form": form})
         request.session["pending_registration_user_id"] = user.id
         messages.info(request, message)
         return redirect("accounts:verify_registration_otp")
-    return render(request, "accounts/register.html", {"form": form})
+    template = _get_register_template(role)
+    return render(request, template, {"form": form})
 
 
 def verify_registration_otp_view(request):
@@ -146,6 +217,12 @@ def login_view(request):
         if not user.email:
             messages.error(request, "No email is linked to this account. Contact admin.")
             return render(request, "accounts/login.html", {"form": form})
+        # For ADMIN/TEACHER, require secret key verification
+        if user.role in [CustomUser.Role.ADMIN, CustomUser.Role.TEACHER]:
+            request.session['pending_login_user_id'] = user.id
+            request.session['secret_key_flow'] = 'login'
+            return redirect('accounts:secret_key_verification')
+        # For STUDENT, proceed directly to OTP
         sent, message = _create_and_send_otp(user, OTPVerification.Purpose.LOGIN, "Login")
         if not sent:
             messages.error(request, message)
@@ -228,6 +305,10 @@ def redirect_dashboard(request):
     if not request.user.is_authenticated:
         return redirect("accounts:login")
 
+    if request.user.role == CustomUser.Role.ADMIN:
+        return redirect("admin_panel:dashboard")
+    if request.user.role == CustomUser.Role.TEACHER:
+        return redirect("teacher:dashboard")
     return redirect("student:dashboard")
 
 

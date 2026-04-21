@@ -24,6 +24,13 @@ class RegisterForm(forms.ModelForm):
         widget=forms.EmailInput(attrs={"class": "form-control", "placeholder": "Parent email (for student)"}),
     )
 
+    def __init__(self, *args, **kwargs):
+        role = kwargs.get("initial", {}).get("role")
+        super().__init__(*args, **kwargs)
+        if role in ["TEACHER", "ADMIN"]:
+            self.fields.pop("academic_class", None)
+            self.fields.pop("parent_email", None)
+
     class Meta:
         model = CustomUser
         fields = ("username", "first_name", "last_name", "email")
@@ -32,7 +39,6 @@ class RegisterForm(forms.ModelForm):
             "first_name": forms.TextInput(attrs={"class": "form-control"}),
             "last_name": forms.TextInput(attrs={"class": "form-control"}),
             "email": forms.EmailInput(attrs={"class": "form-control"}),
-            "role": forms.Select(attrs={"class": "form-select"}),
         }
 
     def clean(self):
@@ -41,9 +47,10 @@ class RegisterForm(forms.ModelForm):
             raise forms.ValidationError("Passwords do not match.")
         if not cleaned_data.get("email"):
             raise forms.ValidationError("Email is required for OTP verification.")
-        if cleaned_data.get("role") == CustomUser.Role.STUDENT and not cleaned_data.get("academic_class"):
+        role = self.initial.get("role", CustomUser.Role.STUDENT)
+        if role == CustomUser.Role.STUDENT and not cleaned_data.get("academic_class"):
             raise forms.ValidationError("Class is required when registering as student.")
-        if cleaned_data.get("role") == CustomUser.Role.STUDENT and not cleaned_data.get("parent_email"):
+        if role == CustomUser.Role.STUDENT and not cleaned_data.get("parent_email"):
             raise forms.ValidationError("Parent email is required when registering as student.")
         return cleaned_data
 
@@ -67,3 +74,21 @@ class LoginWithPasswordForm(forms.Form):
 
 class OTPForm(forms.Form):
     code = forms.CharField(max_length=6, min_length=6, widget=forms.TextInput(attrs={"class": "form-control"}))
+
+
+class SecretKeyForm(forms.Form):
+    secret_key = forms.CharField(
+        max_length=100,
+        widget=forms.PasswordInput(attrs={"class": "form-control", "placeholder": "Enter Secret Key"}),
+        label="Secret Key"
+    )
+
+    def __init__(self, *args, **kwargs):
+        self.expected_key = kwargs.pop('expected_key', '')
+        super().__init__(*args, **kwargs)
+
+    def clean_secret_key(self):
+        key = self.cleaned_data.get('secret_key')
+        if key != self.expected_key:
+            raise forms.ValidationError("Invalid secret key. Access denied.")
+        return key

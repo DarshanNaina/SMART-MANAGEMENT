@@ -28,6 +28,12 @@ SECRET_KEY = os.environ.get(
     "django-insecure-dev-only-key-change-me",
 )
 
+# Secret key for Admin/Teacher access
+SECRET_ACCESS_KEY = os.environ.get(
+    "SECRET_ACCESS_KEY",
+    "20060106",  # Default for development
+)
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG", "True").lower() == "true"
 

@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
 
+from accounts.decorators import role_required
 from accounts.models import (
     AcademicClass,
     Assignment,
@@ -23,6 +24,7 @@ from .forms import (
 )
 
 
+@role_required(CustomUser.Role.ADMIN)
 def dashboard(request):
     marks = Mark.objects.all()
     avg_percentage = round(sum(mark.percentage for mark in marks) / marks.count(), 2) if marks else 0
@@ -42,16 +44,18 @@ def dashboard(request):
     return render(request, "admin_panel/dashboard.html", context)
 
 
+@role_required(CustomUser.Role.ADMIN)
 def manage_users(request):
     form = UserCreateForm(request.POST or None)
     if request.method == "POST" and form.is_valid():
         form.save()
         messages.success(request, "User created successfully.")
         return redirect("admin_panel:manage_users")
-    users = CustomUser.objects.exclude(is_superuser=True).order_by("username")
+    users = CustomUser.objects.exclude(is_superuser=True).order_by("role", "username")
     return render(request, "admin_panel/manage_users.html", {"form": form, "users": users})
 
 
+@role_required(CustomUser.Role.ADMIN)
 def delete_user(request, user_id):
     user = get_object_or_404(CustomUser, id=user_id, is_superuser=False)
     if request.method == "POST":
@@ -60,6 +64,7 @@ def delete_user(request, user_id):
     return redirect("admin_panel:manage_users")
 
 
+@role_required(CustomUser.Role.ADMIN)
 def manage_classes_subjects(request):
     class_form = ClassForm(request.POST or None, prefix="class")
     subject_form = SubjectForm(request.POST or None, prefix="subject")
@@ -84,6 +89,7 @@ def manage_classes_subjects(request):
     )
 
 
+@role_required(CustomUser.Role.ADMIN)
 def assign_teachers(request):
     form = TeacherAssignmentForm(request.POST or None)
     if request.method == "POST" and form.is_valid():
@@ -94,6 +100,7 @@ def assign_teachers(request):
     return render(request, "admin_panel/assign_teachers.html", {"form": form, "assignments": assignments})
 
 
+@role_required(CustomUser.Role.ADMIN)
 def manage_profiles(request):
     teacher_form = TeacherProfileForm(request.POST or None, prefix="teacher")
     student_form = StudentProfileForm(request.POST or None, prefix="student")
@@ -120,6 +127,7 @@ def manage_profiles(request):
     )
 
 
+@role_required(CustomUser.Role.ADMIN)
 def delete_teacher_profile(request, profile_id):
     profile = get_object_or_404(TeacherProfile, id=profile_id)
     if request.method == "POST":
@@ -128,6 +136,7 @@ def delete_teacher_profile(request, profile_id):
     return redirect("admin_panel:manage_profiles")
 
 
+@role_required(CustomUser.Role.ADMIN)
 def delete_student_profile(request, profile_id):
     profile = get_object_or_404(StudentProfile, id=profile_id)
     if request.method == "POST":

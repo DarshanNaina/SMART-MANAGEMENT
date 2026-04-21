@@ -7,8 +7,15 @@ from datetime import timedelta
 
 
 class CustomUser(AbstractUser):
+    class Role(models.TextChoices):
+        ADMIN = "ADMIN", "Admin"
+        TEACHER = "TEACHER", "Teacher"
+        STUDENT = "STUDENT", "Student"
+
+    role = models.CharField(max_length=20, choices=Role.choices, default=Role.STUDENT)
+
     def __str__(self):
-        return f"{self.username}"
+        return f"{self.username} ({self.role})"
 
 
 class AcademicClass(models.Model):

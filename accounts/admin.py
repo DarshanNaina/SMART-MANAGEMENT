@@ -17,7 +17,8 @@ from .models import (
 
 @admin.register(CustomUser)
 class CustomUserAdmin(UserAdmin):
-    list_display = ("username", "email", "is_staff")
+    fieldsets = UserAdmin.fieldsets + (("RBAC", {"fields": ("role",)}),)
+    list_display = ("username", "email", "role", "is_staff")
 
 
 admin.site.register(AcademicClass)

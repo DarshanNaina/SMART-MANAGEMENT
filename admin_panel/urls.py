@@ -1,5 +1,6 @@
 from django.urls import path
 
+from accounts.views import register_view
 from .views import (
     assign_teachers,
     dashboard,
@@ -22,4 +23,5 @@ urlpatterns = [
     path("profiles/student/<int:profile_id>/delete/", delete_student_profile, name="delete_student_profile"),
     path("classes-subjects/", manage_classes_subjects, name="manage_classes_subjects"),
     path("assign-teachers/", assign_teachers, name="assign_teachers"),
+    path("register/", register_view, {"role": "ADMIN"}, name="register"),
 ]
