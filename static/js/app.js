@@ -61,9 +61,13 @@
   }
 
   function updateThemeIcon(theme) {
-    const icon = themeToggle.querySelector('i');
+    const icon = themeToggle.querySelector('.toggle-icon');
+    const text = themeToggle.querySelector('.toggle-text');
     if (icon) {
-      icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+      icon.className = theme === 'dark' ? 'fas fa-sun toggle-icon' : 'fas fa-moon toggle-icon';
+    }
+    if (text) {
+      text.textContent = theme === 'dark' ? 'Light' : 'Dark';
     }
   }
 

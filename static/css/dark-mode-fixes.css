@@ -1,0 +1,241 @@
+/* ===== COMPREHENSIVE DARK MODE TEXT VISIBILITY FIXES ===== */
+
+/* Force all text to be visible in dark mode */
+[data-theme="dark"] {
+    color: var(--text-primary) !important;
+    color-scheme: dark;
+}
+
+[data-theme="dark"] * {
+    color: inherit !important;
+}
+
+/* ===== HOME PAGE SPECIFIC FIXES ===== */
+
+/* Feature Badge Styling */
+.feature-badge {
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--radius-lg);
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .feature-badge,
+[data-theme="dark"] .feature-badge span {
+    color: var(--text-primary) !important;
+}
+
+/* Hero Section */
+.hero-content h1 {
+    color: var(--primary);
+}
+
+.hero-content p {
+    color: var(--text-primary);
+}
+
+.hero-features {
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .hero-content h1 {
+    color: var(--primary) !important;
+}
+
+[data-theme="dark"] .hero-content p {
+    color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .hero-features {
+    color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .hero-features .feature-badge {
+    color: var(--text-primary) !important;
+}
+
+/* Feature Cards */
+.feature-card {
+    transition: all var(--transition-normal);
+}
+
+.feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+
+.card-title {
+    color: var(--text-primary) !important;
+}
+
+.card-value h3 {
+    color: var(--primary) !important;
+}
+
+[data-theme="dark"] .feature-card {
+    background: var(--glass-bg) !important;
+}
+
+[data-theme="dark"] .feature-card p,
+[data-theme="dark"] .feature-card h5,
+[data-theme="dark"] .feature-card h3 {
+    color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .card-title {
+    color: var(--text-primary) !important;
+}
+
+/* CTA Section */
+.cta-card {
+    transition: all var(--transition-normal);
+}
+
+.cta-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-xl);
+}
+
+.cta-content h2,
+.cta-content p {
+    color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .cta-card {
+    background: var(--glass-bg) !important;
+}
+
+[data-theme="dark"] .cta-content h2,
+[data-theme="dark"] .cta-content p {
+    color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .cta-section h2,
+[data-theme="dark"] .cta-section p {
+    color: var(--text-primary) !important;
+}
+
+/* Hover Effects */
+.hover-lift {
+    transition: all var(--transition-normal);
+}
+
+.hover-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+
+/* Section Headings */
+.features-section h2 {
+    color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .features-section h2 {
+    color: var(--text-primary) !important;
+}
+
+/* All Paragraphs */
+p {
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] p {
+    color: var(--text-primary) !important;
+}
+
+/* Button Text */
+[data-theme="dark"] .btn-primary {
+    color: white !important;
+    background: linear-gradient(135deg, var(--primary), var(--primary-hover)) !important;
+    border: none !important;
+}
+
+[data-theme="dark"] .btn-outline-primary {
+    color: var(--primary) !important;
+    border-color: var(--primary) !important;
+    background: transparent !important;
+}
+
+[data-theme="dark"] .btn-outline-primary:hover {
+    background: var(--primary) !important;
+    color: white !important;
+}
+
+/* Bootstrap Typography */
+[data-theme="dark"] h1,
+[data-theme="dark"] h2,
+[data-theme="dark"] h3,
+[data-theme="dark"] h4,
+[data-theme="dark"] h5,
+[data-theme="dark"] h6 {
+    color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] span,
+[data-theme="dark"] div,
+[data-theme="dark"] li,
+[data-theme="dark"] td,
+[data-theme="dark"] th,
+[data-theme="dark"] label,
+[data-theme="dark"] small {
+    color: var(--text-primary) !important;
+}
+
+/* Lead Text */
+.lead {
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .lead {
+    color: var(--text-primary) !important;
+}
+
+/* Bootstrap Classes Override */
+[data-theme="dark"] .text-primary {
+    color: var(--primary) !important;
+}
+
+[data-theme="dark"] .text-secondary {
+    color: var(--text-secondary) !important;
+}
+
+[data-theme="dark"] .text-muted {
+    color: var(--text-muted) !important;
+}
+
+[data-theme="dark"] .text-success {
+    color: #10b981 !important;
+}
+
+[data-theme="dark"] .text-info {
+    color: #06b6d4 !important;
+}
+
+[data-theme="dark"] .text-warning {
+    color: #f59e0b !important;
+}
+
+/* Glass Cards */
+[data-theme="dark"] .glass-card {
+    background: var(--glass-bg) !important;
+    border-color: var(--glass-border) !important;
+}
+
+/* Ensure text gradient is visible */
+.text-gradient {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: var(--primary);
+}
+
+[data-theme="dark"] .text-gradient {
+    background: linear-gradient(135deg, var(--primary), var(--accent)) !important;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: var(--primary);
+}

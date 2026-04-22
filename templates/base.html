@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/dark-mode-fixes.css' %}" />
 </head>
 <body>
     {% if user.is_authenticated %}
@@ -74,7 +75,8 @@
 
     <!-- Global Theme Toggle - Available on all pages -->
     <button id="theme-toggle" class="theme-toggle-global" title="Toggle theme">
-        <i class="fas fa-moon"></i>
+        <i class="fas fa-moon toggle-icon"></i>
+        <span class="toggle-text">Theme</span>
     </button>
 
     <div id="page-loader" class="page-loader">
