@@ -10,18 +10,46 @@
     </form>
 </section>
 <section class="glass-card p-4" data-aos="fade-up">
-    <div class="table-responsive"><table class="table table-hover align-middle">
-        <tr><th>Title</th><th>Subject</th><th>Class</th><th>Due Date</th></tr>
-        {% for item in assignments %}
-            <tr>
-                <td>{{ item.title }}</td>
-                <td>{{ item.subject.name }}</td>
-                <td>{{ item.academic_class }}</td>
-                <td>{{ item.due_date|default:"-" }}</td>
-            </tr>
-        {% empty %}
-            <tr><td colspan="4">No assignments uploaded.</td></tr>
-        {% endfor %}
-    </table></div>
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Subject</th>
+                    <th>Class</th>
+                    <th>Due Date</th>
+                    <th>Submissions</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in assignments %}
+                    <tr>
+                        <td>{{ item.title }}</td>
+                        <td>{{ item.subject.name }}</td>
+                        <td>{{ item.academic_class }}</td>
+                        <td>{{ item.due_date|default:"-" }}</td>
+                        <td>
+                            <span class="badge bg-info">{{ item.submission_count }} Submitted</span>
+                            {% if item.pending_marks_count > 0 %}
+                                <span class="badge bg-warning">{{ item.pending_marks_count }} Pending</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if item.submission_count > 0 %}
+                                <a href="{% url 'teacher:view_assignment_submissions' item.id %}" class="btn btn-sm btn-primary">
+                                    <i class="fas fa-eye me-1"></i>View Submissions
+                                </a>
+                            {% else %}
+                                <span class="text-muted">No submissions</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr><td colspan="6" class="text-center">No assignments uploaded.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </section>
 {% endblock %}

@@ -181,6 +181,11 @@ class AssignmentSubmission(models.Model):
     student = models.ForeignKey(StudentProfile, on_delete=models.CASCADE, related_name="submissions")
     file = models.FileField(upload_to="submissions/")
     remarks = models.CharField(max_length=255, blank=True)
+    marks_obtained = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+        validators=[MinValueValidator(0), MaxValueValidator(100)],
+    )
     submitted_at = models.DateTimeField(auto_now=True)
 
     class Meta:

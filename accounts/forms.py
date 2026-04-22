@@ -13,6 +13,11 @@ class CustomAuthenticationForm(AuthenticationForm):
 class RegisterForm(forms.ModelForm):
     password1 = forms.CharField(widget=forms.PasswordInput(attrs={"class": "form-control"}))
     password2 = forms.CharField(widget=forms.PasswordInput(attrs={"class": "form-control"}))
+    role = forms.ChoiceField(
+        choices=CustomUser.Role.choices,
+        widget=forms.Select(attrs={"class": "form-select"}),
+        initial=CustomUser.Role.STUDENT,
+    )
     academic_class = forms.ModelChoiceField(
         queryset=AcademicClass.objects.all(),
         required=False,
@@ -27,9 +32,13 @@ class RegisterForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         role = kwargs.get("initial", {}).get("role")
         super().__init__(*args, **kwargs)
-        if role in ["TEACHER", "ADMIN"]:
+        # Hide student-specific fields for non-student roles
+        if role and role in ["TEACHER", "ADMIN"]:
+            self.fields["role"].initial = role
             self.fields.pop("academic_class", None)
             self.fields.pop("parent_email", None)
+        elif role:
+            self.fields["role"].initial = role
 
     class Meta:
         model = CustomUser
@@ -47,11 +56,13 @@ class RegisterForm(forms.ModelForm):
             raise forms.ValidationError("Passwords do not match.")
         if not cleaned_data.get("email"):
             raise forms.ValidationError("Email is required for OTP verification.")
-        role = self.initial.get("role", CustomUser.Role.STUDENT)
-        if role == CustomUser.Role.STUDENT and not cleaned_data.get("academic_class"):
-            raise forms.ValidationError("Class is required when registering as student.")
-        if role == CustomUser.Role.STUDENT and not cleaned_data.get("parent_email"):
-            raise forms.ValidationError("Parent email is required when registering as student.")
+        # Get role from form data first, fallback to initial
+        role = cleaned_data.get("role") or self.initial.get("role", CustomUser.Role.STUDENT)
+        if role == CustomUser.Role.STUDENT:
+            if not cleaned_data.get("academic_class"):
+                raise forms.ValidationError("Class is required when registering as student.")
+            if not cleaned_data.get("parent_email"):
+                raise forms.ValidationError("Parent email is required when registering as student.")
         return cleaned_data
 
 

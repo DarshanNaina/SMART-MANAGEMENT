@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% block title %}Mark Assignment Submission{% endblock %}
+{% block page_title %}Mark Submission - {{ submission.assignment.title }}{% endblock %}
+{% block content %}
+<section class="glass-card p-4" data-aos="fade-up">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <!-- Submission Info -->
+            <div class="card mb-4 border-0 bg-light">
+                <div class="card-body">
+                    <h5 class="card-title mb-3"><i class="fas fa-file-assignment text-primary me-2"></i>Submission Details</h5>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p class="mb-2">
+                                <strong>Student:</strong> {{ submission.student.user.get_full_name|default:submission.student.user.username }}
+                            </p>
+                            <p class="mb-2">
+                                <strong>Roll Number:</strong> {{ submission.student.roll_number }}
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="mb-2">
+                                <strong>Assignment:</strong> {{ submission.assignment.title }}
+                            </p>
+                            <p class="mb-2">
+                                <strong>Subject:</strong> {{ submission.assignment.subject.name }}
+                            </p>
+                        </div>
+                    </div>
+                    <p class="mb-0">
+                        <strong>Submitted:</strong> {{ submission.submitted_at|date:"d M Y, H:i" }}
+                    </p>
+                </div>
+            </div>
+
+            <!-- Submission File Link -->
+            <div class="mb-4">
+                <a href="{{ submission.file.url }}" target="_blank" class="btn btn-lg btn-info w-100">
+                    <i class="fas fa-download me-2"></i>Download Submission
+                </a>
+            </div>
+
+            <!-- Marking Form -->
+            <form method="post" class="card border-0 bg-light p-4">
+                {% csrf_token %}
+                
+                <h5 class="mb-4"><i class="fas fa-star text-warning me-2"></i>Give Marks & Feedback</h5>
+
+                <!-- Marks Field -->
+                <div class="form-group mb-4">
+                    <label for="{{ form.marks_obtained.id_for_label }}" class="form-label fw-semibold">
+                        <i class="fas fa-graduation-cap text-primary me-2"></i>Marks Obtained (0-100)
+                    </label>
+                    {{ form.marks_obtained }}
+                    {% if form.marks_obtained.errors %}
+                        <div class="text-danger small mt-2">
+                            <i class="fas fa-exclamation-circle me-1"></i>{{ form.marks_obtained.errors.0 }}
+                        </div>
+                    {% endif %}
+                    <small class="text-muted d-block mt-2">Enter marks out of 100</small>
+                </div>
+
+                <!-- Remarks Field -->
+                <div class="form-group mb-4">
+                    <label for="{{ form.remarks.id_for_label }}" class="form-label fw-semibold">
+                        <i class="fas fa-comments text-primary me-2"></i>Feedback & Remarks
+                    </label>
+                    {{ form.remarks }}
+                    {% if form.remarks.errors %}
+                        <div class="text-danger small mt-2">
+                            <i class="fas fa-exclamation-circle me-1"></i>{{ form.remarks.errors.0 }}
+                        </div>
+                    {% endif %}
+                    <small class="text-muted d-block mt-2">Provide constructive feedback for the student</small>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="d-grid gap-2 d-sm-flex justify-content-sm-end">
+                    <a href="{% url 'teacher:view_assignment_submissions' submission.assignment.id %}" class="btn btn-secondary">
+                        <i class="fas fa-times me-1"></i>Cancel
+                    </a>
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        <i class="fas fa-check me-2"></i>Submit Marks
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<style>
+    .form-control {
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 0.75rem 1rem;
+        font-size: 1rem;
+    }
+    .form-control:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+    }
+</style>
+{% endblock %}

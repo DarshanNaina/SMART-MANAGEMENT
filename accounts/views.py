@@ -134,14 +134,14 @@ def secret_key_verification_view(request):
 
 
 def register_view(request, role=None):
-    if role:
-        initial = {"role": role}
-    else:
-        initial = {}
+    # Default to STUDENT if no role is specified via URL
+    default_role = role or CustomUser.Role.STUDENT
+    initial = {"role": default_role}
     form = RegisterForm(request.POST or None, initial=initial)
     if request.method == "POST" and form.is_valid():
         user = form.save(commit=False)
-        user.role = role or CustomUser.Role.STUDENT
+        # Use role from form if provided, otherwise use URL parameter or default to STUDENT
+        user.role = form.cleaned_data.get("role") or default_role
         user.set_password(form.cleaned_data["password1"])
         user.is_active = False
         user.save()
