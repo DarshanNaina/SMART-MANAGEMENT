@@ -1,119 +1,151 @@
 {% extends 'base.html' %}
 {% block title %}Home | SAMS{% endblock %}
 {% block page_title %}Welcome{% endblock %}
+
 {% block content %}
-<!-- Hero Section -->
-<section class="hero-section glass-card mb-5 shadow-lg" data-aos="fade-up">
-    <div class="row align-items-center g-5">
-        <div class="col-lg-6">
-            <div class="hero-content">
+<style>
+    html, body {
+        overflow-x: hidden;
+    }
+
+    .home-wrap {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+
+    .hero-section, .features-section, .cta-section {
+        overflow: hidden;
+    }
+
+    .feature-card, .cta-card, .hero-section {
+        max-width: 100%;
+        border-radius: 16px;
+    }
+
+    .hero-section { padding: 1.25rem; }
+    .feature-card { padding: 1.25rem; }
+
+    .hero-image-container img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
+
+    @media (max-width: 767.98px) {
+        .hero-section { padding: 1rem; }
+        .feature-card { padding: 1rem; }
+        .cta-card { padding: 1.25rem !important; }
+
+        .display-4 { font-size: 2rem; }
+
+        .features-section .col-md-4,
+        .features-section .col-lg-4 {
+            flex: 0 0 100%;
+            max-width: 100%;
+        }
+
+        .btn.btn-lg {
+            width: 100%;
+        }
+
+        .hero-features .feature-badge {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+    }
+</style>
+
+<div class="container py-3 home-wrap">
+    <!-- Hero Section -->
+    <section class="hero-section glass-card mb-5 shadow-lg" data-aos="fade-up">
+        <div class="row align-items-center g-4 g-lg-5">
+            <div class="col-12 col-lg-6">
                 <h1 class="display-4 fw-bold mb-4 text-gradient">Modern Smart Academic Management Platform</h1>
-                <p class="lead text-primary mb-4 lh-lg">Track students, manage faculty, monitor attendance, and measure performance in one premium dashboard with advanced analytics and role-based security.</p>
-                
-                <div class="d-flex flex-column flex-md-row gap-3 mb-5">
-                    <a href="{% url 'accounts:redirect_dashboard' %}" class="btn btn-primary btn-lg px-5 fw-semibold">
+                <p class="lead text-primary mb-4 lh-lg">
+                    Track students, manage faculty, monitor attendance, and measure performance in one premium dashboard with advanced analytics and role-based security.
+                </p>
+
+                <div class="d-grid gap-2 d-md-flex mb-4 mb-md-5">
+                    <a href="{% url 'accounts:redirect_dashboard' %}" class="btn btn-primary btn-lg px-4 px-md-5 fw-semibold">
                         <i class="fas fa-rocket me-2"></i>Go to Dashboard
                     </a>
-                    <a href="{% url 'accounts:register' %}" class="btn btn-outline-primary btn-lg px-5 fw-semibold">
+                    <a href="{% url 'accounts:register' %}" class="btn btn-outline-primary btn-lg px-4 px-md-5 fw-semibold">
                         <i class="fas fa-user-plus me-2"></i>Get Started
                     </a>
                 </div>
-                
-                <div class="hero-features d-flex flex-wrap gap-3">
-                    <div class="feature-badge glass-card">
-                        <i class="fas fa-shield-alt text-success me-2 fs-5"></i>
-                        <span class="fw-semibold">Secure Access</span>
-                    </div>
-                    <div class="feature-badge glass-card">
-                        <i class="fas fa-mobile-alt text-info me-2 fs-5"></i>
-                        <span class="fw-semibold">Mobile Ready</span>
-                    </div>
-                    <div class="feature-badge glass-card">
-                        <i class="fas fa-chart-line text-warning me-2 fs-5"></i>
-                        <span class="fw-semibold">Real-time Analytics</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-lg-6">
-            <div class="hero-image-container">
-                <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=1200&auto=format&fit=crop" class="img-fluid rounded-4 shadow-lg" alt="Education hero" data-aos="zoom-in" data-aos-delay="200">
-                <div class="image-overlay">
-                    <div class="stat-bubble glass-card">
-                        <div class="stat-number fw-bold">99.9%</div>
-                        <div class="stat-label">Uptime</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
 
-<!-- Features Section -->
-<section class="features-section py-5">
-    <h2 class="h2 fw-bold text-center mb-5 text-primary">Platform Features</h2>
-    <div class="row g-4">
-        <!-- Feature Card 1 -->
-        <div class="col-md-4" data-aos="fade-up" data-aos-delay="50">
-            <div class="glass-card feature-card h-100 p-5 text-center shadow-sm hover-lift">
-                <div class="card-icon mb-4">
-                    <i class="fas fa-user-tag fs-1 text-primary"></i>
+                <div class="hero-features d-flex flex-wrap gap-2 gap-md-3">
+                    <div class="feature-badge glass-card p-2 px-3">
+                        <i class="fas fa-shield-alt text-success me-2"></i><span class="fw-semibold">Secure Access</span>
+                    </div>
+                    <div class="feature-badge glass-card p-2 px-3">
+                        <i class="fas fa-mobile-alt text-info me-2"></i><span class="fw-semibold">Mobile Ready</span>
+                    </div>
+                    <div class="feature-badge glass-card p-2 px-3">
+                        <i class="fas fa-chart-line text-warning me-2"></i><span class="fw-semibold">Real-time Analytics</span>
+                    </div>
                 </div>
-                <h5 class="card-title fw-bold mb-2 fs-5 text-primary">Role-Based Access</h5>
-                <div class="card-value mb-3">
-                    <h3 class="text-primary fw-bold">{{ request.user.role|default:"Multi-Role" }}</h3>
-                </div>
-                <p class="text-primary fs-6 lh-lg">Secure authentication with role-specific permissions and controlled access levels</p>
             </div>
-        </div>
-        
-        <!-- Feature Card 2 -->
-        <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
-            <div class="glass-card feature-card h-100 p-5 text-center shadow-sm hover-lift">
-                <div class="card-icon mb-4">
-                    <i class="fas fa-lock fs-1 text-success"></i>
-                </div>
-                <h5 class="card-title fw-bold mb-2 fs-5 text-primary">Advanced Security</h5>
-                <div class="card-value mb-3">
-                    <h3 class="text-success fw-bold">OTP Verified</h3>
-                </div>
-                <p class="text-primary fs-6 lh-lg">Two-factor authentication with SMS verification for enhanced protection</p>
-            </div>
-        </div>
-        
-        <!-- Feature Card 3 -->
-        <div class="col-md-4" data-aos="fade-up" data-aos-delay="150">
-            <div class="glass-card feature-card h-100 p-5 text-center shadow-sm hover-lift">
-                <div class="card-icon mb-4">
-                    <i class="fas fa-chart-bar fs-1 text-info"></i>
-                </div>
-                <h5 class="card-title fw-bold mb-2 fs-5 text-primary">Smart Analytics</h5>
-                <div class="card-value mb-3">
-                    <h3 class="text-info fw-bold">Real-time</h3>
-                </div>
-                <p class="text-primary fs-6 lh-lg">Comprehensive dashboards with live data insights and performance metrics</p>
-            </div>
-        </div>
-    </div>
-</section>
 
-<!-- Call to Action Section -->
-<section class="cta-section py-5 mt-4">
-    <div class="glass-card cta-card p-5 shadow-lg text-center" data-aos="fade-up">
-        <div class="cta-content">
+            <div class="col-12 col-lg-6">
+                <div class="hero-image-container">
+                    <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=1200&auto=format&fit=crop"
+                         class="img-fluid rounded-4 shadow-lg" alt="Education hero">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section py-4 py-md-5">
+        <h2 class="h2 fw-bold text-center mb-4 mb-md-5 text-primary">Platform Features</h2>
+        <div class="row g-3 g-md-4">
+            <div class="col-12 col-md-4" data-aos="fade-up" data-aos-delay="50">
+                <div class="glass-card feature-card h-100 text-center shadow-sm">
+                    <i class="fas fa-user-tag fs-1 text-primary mb-3"></i>
+                    <h5 class="fw-bold mb-2 text-primary">Role-Based Access</h5>
+                    <h3 class="text-primary fw-bold mb-3">{{ request.user.role|default:"Multi-Role" }}</h3>
+                    <p class="text-primary mb-0">Secure authentication with role-specific permissions and controlled access levels</p>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="glass-card feature-card h-100 text-center shadow-sm">
+                    <i class="fas fa-lock fs-1 text-success mb-3"></i>
+                    <h5 class="fw-bold mb-2 text-primary">Advanced Security</h5>
+                    <h3 class="text-success fw-bold mb-3">OTP Verified</h3>
+                    <p class="text-primary mb-0">Two-factor authentication with SMS verification for enhanced protection</p>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-4" data-aos="fade-up" data-aos-delay="150">
+                <div class="glass-card feature-card h-100 text-center shadow-sm">
+                    <i class="fas fa-chart-bar fs-1 text-info mb-3"></i>
+                    <h5 class="fw-bold mb-2 text-primary">Smart Analytics</h5>
+                    <h3 class="text-info fw-bold mb-3">Real-time</h3>
+                    <p class="text-primary mb-0">Comprehensive dashboards with live data insights and performance metrics</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section py-4 py-md-5 mt-2 mt-md-4">
+        <div class="glass-card cta-card p-4 p-md-5 shadow-lg text-center">
             <h2 class="h1 fw-bold mb-3 text-primary">Ready to Transform Your Academic Management?</h2>
-            <p class="lead text-primary fs-6 mb-5">Join thousands of educational institutions using our modern, secure platform</p>
-            
-            <div class="d-flex flex-column flex-md-row gap-3 justify-content-center">
-                <a href="{% url 'accounts:register' %}" class="btn btn-primary btn-lg px-5 fw-semibold">
+            <p class="lead text-primary fs-6 mb-4 mb-md-5">Join thousands of educational institutions using our modern, secure platform</p>
+
+            <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                <a href="{% url 'accounts:register' %}" class="btn btn-primary btn-lg px-4 px-md-5 fw-semibold">
                     <i class="fas fa-user-plus me-2"></i>Create New Account
                 </a>
-                <a href="{% url 'accounts:login' %}" class="btn btn-outline-primary btn-lg px-5 fw-semibold">
+                <a href="{% url 'accounts:login' %}" class="btn btn-outline-primary btn-lg px-4 px-md-5 fw-semibold">
                     <i class="fas fa-sign-in-alt me-2"></i>Sign In
                 </a>
             </div>
         </div>
-    </div>
-</section>
+    </section>
+</div>
 {% endblock %}
